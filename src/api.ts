@@ -7,7 +7,7 @@ import { titleCase } from "./helpers/string-utils";
 import { getItem, setItem, removeItem } from "localforage";
 
 const BASE_URL =
-  process.env.NODE_ENV === "development" ? "http://localhost:3001/v1" : "http://localhost:3001/v1";
+  process.env.NODE_ENV === "development" ? "http://localhost:3000" : "http://localhost:3000";
 
 let loggedInUsers: User[] = [];
 users.subscribe((users) => (loggedInUsers = users));
@@ -82,10 +82,8 @@ export const api = async <T>({
             "Content-Type": "application/json",
           },
         });
-        const {
-          accessToken,
-          refreshToken,
-        }: { accessToken: string; refreshToken: string } = await res.json();
+        const { accessToken, refreshToken }: { accessToken: string; refreshToken: string } =
+          await res.json();
         users.update((val) =>
           val.map((user, i) => {
             if (index === i) {
@@ -141,7 +139,7 @@ export const api = async <T>({
   }
   if (blob) {
     const blob = await res.blob();
-    return (blob as any) as T;
+    return blob as any as T;
   } else {
     const json: T = await res.json();
     if (method === "GET" && !url.includes("cursor"))
@@ -186,10 +184,8 @@ export const refresh = async () => {
         "Content-Type": "application/json",
       },
     });
-    const {
-      accessToken,
-      refreshToken,
-    }: { accessToken: string; refreshToken: string } = await res.json();
+    const { accessToken, refreshToken }: { accessToken: string; refreshToken: string } =
+      await res.json();
     const memberships = await api<any[]>({
       method: "GET",
       url: `/users/${loggedInUsers[index].details.id}/memberships`,

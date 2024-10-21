@@ -3,7 +3,8 @@
   "description": "Frontend Svelte app starter for SaaS startups",
   "version": "3.0.2",
   "scripts": {
-    "dev": "sapper dev",
+    "api-gen": "rm -rf ./src/api/0 & rm -rf ./src/api/index.ts & apits-gener gen",
+    "dev": "sapper dev -p 3004",
     "build": "sapper build --legacy",
     "export": "sapper export --legacy",
     "start": "node __sapper__/build",
